@@ -27,7 +27,8 @@ import {
 import { AppContext } from './app-context';
 import { supabase, isSupabaseConfigured } from './supabase';
 
-const STORAGE_KEY = 'buildx_sih_state_v1';
+const STORAGE_KEY = 'veriqo_state_v1';
+const LEGACY_STORAGE_KEY = 'buildx_sih_state_v1';
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Initialize to Verified Final Stage 5/6 Hero State by default
@@ -84,7 +85,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Load from LocalStorage on mount
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed.business) setBusiness(parsed.business);
@@ -492,6 +493,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const resetDemoData = (mode: 'APPROVED' | 'DRAFT' = 'APPROVED') => {
     localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(LEGACY_STORAGE_KEY);
     if (mode === 'DRAFT') {
       const draftApp = { ...DRAFT_HERO_APPLICATION };
       const draftDocs = [...BASE_VAULT_DOCUMENTS];

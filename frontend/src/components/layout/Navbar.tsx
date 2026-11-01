@@ -45,11 +45,11 @@ export const Navbar: React.FC = () => {
                 fontSize: '16px',
               }}
             >
-              BX
+              VQ
             </div>
             <div>
               <div style={{ fontSize: '15px', fontWeight: '700', letterSpacing: '-0.2px', color: '#0f172a' }}>
-                BuildX
+                Veriqo
               </div>
               <div style={{ fontSize: '11px', color: '#64748b', marginTop: '-2px' }}>
                 Intelligent Approval &amp; Compliance Platform

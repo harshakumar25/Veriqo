@@ -110,7 +110,7 @@ export default function GovernmentApplicationReviewPage() {
   };
 
   const latestQuery = queries[0];
-  const isQueryResponded = latestQuery && latestQuery.status === 'RESPONDED';
+  const _isQueryResponded = latestQuery && latestQuery.status === 'RESPONDED';
 
   // Final Review Quality Checks
   const reviewGates = [
@@ -213,7 +213,7 @@ export default function GovernmentApplicationReviewPage() {
                 APPLICATION APPROVED — FINAL DECISION RECORDED
               </div>
               <div style={{ fontSize: '13px', color: '#166534', marginTop: '2px' }}>
-                BuildX Clearance Reference: <strong>APR-MH-2026-00124</strong> • Decided by {currentPersona.name}
+                Veriqo Clearance Reference: <strong>APR-MH-2026-00124</strong> • Decided by {currentPersona.name}
               </div>
             </div>
           </div>

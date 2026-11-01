@@ -84,8 +84,8 @@ export default function HeroSection({ onOpenAuth }) {
 
             {/* Sub */}
             <p className="hero-sub">
-              BuildX replaces fragmented department visits with a single intelligent window
-              personalised roadmaps, prevalidated applications, realtime tracking, and direct
+              Veriqo replaces fragmented department visits with a single intelligent window:
+              personalized roadmaps, pre-validated applications, real-time tracking, and direct
               government officer connectivity.
             </p>
 

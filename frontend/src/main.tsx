@@ -19,6 +19,7 @@ class ErrorBoundary extends React.Component<
   }
 
   handleReset = () => {
+    localStorage.removeItem('veriqo_state_v1');
     localStorage.removeItem('buildx_sih_state_v1');
     this.setState({ hasError: false, error: null });
     window.location.reload();

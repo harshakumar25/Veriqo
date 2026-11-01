@@ -1,10 +1,13 @@
 {
-  "name": "buildx-sih",
-  "version": "0.1.0",
+  "name": "veriqo",
+  "version": "1.0.0",
+  "description": "Intelligent Industrial Regulatory, Approval & Compliance Management Platform",
   "private": true,
   "scripts": {
     "dev": "npm --prefix frontend run dev",
     "build": "npm --prefix frontend run build",
-    "preview": "npm --prefix frontend run preview"
+    "preview": "npm --prefix frontend run preview",
+    "lint": "npm --prefix frontend run lint",
+    "test": "npm --prefix frontend run test"
   }
 }

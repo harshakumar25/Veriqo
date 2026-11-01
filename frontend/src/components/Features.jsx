@@ -310,7 +310,7 @@ export default function Features() {
           <div className="eyebrow">Platform Features</div>
           <h2 className="h2">Everything you need,<br />in one connected system</h2>
           <p className="lead" style={{ marginTop: 14 }}>
-            From intelligence to approval — BuildX connects every step for
+            From intelligence to approval — Veriqo connects every step for
             entrepreneurs and government officers alike.
           </p>
         </div>

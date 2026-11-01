@@ -48,8 +48,8 @@ export default function Navbar({ onOpenAuth }) {
       >
         <div className="container navbar-inner">
 
-          {/* ── LEFT: Ashoka Emblem + BuildX title ── */}
-          <Link to="/" className="navbar-brand" aria-label="BuildX — Government of Maharashtra">
+          {/* ── LEFT: Ashoka Emblem + Veriqo title ── */}
+          <Link to="/" className="navbar-brand" aria-label="Veriqo — Government of Maharashtra">
             {/* Ashoka emblem */}
             <div className="navbar-emblem" aria-hidden="true">
               <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,9 +75,9 @@ export default function Navbar({ onOpenAuth }) {
               </svg>
             </div>
 
-            {/* BuildX + Gov of Maharashtra stacked */}
+            {/* Veriqo + Gov of Maharashtra stacked */}
             <div className="navbar-identity">
-              <span className="navbar-buildx-name">Build<span className="navbar-x">X</span></span>
+              <span className="navbar-buildx-name">Veriq<span className="navbar-x">o</span></span>
               <span className="navbar-gov-sub">Government of Maharashtra</span>
             </div>
           </Link>

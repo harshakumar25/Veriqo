@@ -32,7 +32,7 @@ export default function HomePage() {
         </h1>
         
         <p style={{ color: '#475569', fontSize: '14px', maxWidth: '780px', marginTop: '8px', lineHeight: '1.6' }}>
-          Enter your business details once. BuildX analyzes sector requirements, generates an explainable regulatory roadmap, pre-validates documents, and synchronizes seamless round-trip officer scrutiny across Maharashtra single-window workflows.
+          Enter your business details once. Veriqo analyzes sector requirements, generates an explainable regulatory roadmap, pre-validates documents, and synchronizes seamless round-trip officer scrutiny across Maharashtra single-window workflows.
         </p>
 
         {/* Hero Business Spotlight */}

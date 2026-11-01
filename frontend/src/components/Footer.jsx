@@ -98,7 +98,7 @@ export default function Footer({ onOpenAuth }) {
         <div className="footer-bottom">
           <div className="footer-bottom-left">
             <span className="footer-copy">
-              © 2026 BuildX · Smart India Hackathon Prototype
+              © 2026 Veriqo · Smart India Hackathon Prototype
             </span>
             <span className="footer-disclaimer">
               Not an official government portal. Built for SIH 2026 demonstration purposes.

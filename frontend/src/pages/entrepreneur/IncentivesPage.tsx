@@ -173,7 +173,7 @@ export default function IncentivesPage() {
           Incentives & Financial Assistance Schemes
         </h1>
         <p style={{ color: '#475569', fontSize: '13px', maxWidth: '820px', marginTop: '4px', lineHeight: '1.5' }}>
-          BuildX matches your verified Business Profile parameters against configured Maharashtra industrial policies and Central sector schemes. The findings below represent <strong>potential relevance</strong> and screening guidance for your 5,000 MT Cold Storage project.
+          Veriqo matches your verified Business Profile parameters against configured Maharashtra industrial policies and Central sector schemes. The findings below represent <strong>potential relevance</strong> and screening guidance for your 5,000 MT Cold Storage project.
         </p>
       </div>
 

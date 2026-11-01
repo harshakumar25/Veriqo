@@ -123,11 +123,11 @@ export default function AuthModal({ isOpen, onClose, initialRole = 'ENTREPRENEUR
                 fontSize: '14px',
               }}
             >
-              BX
+              VQ
             </div>
             <div>
               <div style={{ fontSize: '15px', fontWeight: 800, letterSpacing: '-0.2px' }}>
-                BuildX Single-Window Access
+                Veriqo Single-Window Access
               </div>
               <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 Government of Maharashtra
