@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppStore } from '@/lib/use-app-store';
 import { StatusBadge } from '@/components/ui/StatusBadge';
+import { formatDate } from '@/lib/formatters';
 import { ArrowRight } from 'lucide-react';
 
 export default function GovernmentApplicationsQueuePage() {
@@ -131,7 +132,7 @@ export default function GovernmentApplicationsQueuePage() {
                   <td style={{ padding: '14px', fontWeight: '700', color: '#1d4ed8' }}>
                     {app.appNumber}
                     <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 'normal' }}>
-                      {new Date(app.submittedAt).toLocaleDateString()}
+                      {formatDate(app.submittedAt)}
                     </div>
                   </td>
                   <td style={{ padding: '14px' }}>
@@ -155,7 +156,7 @@ export default function GovernmentApplicationsQueuePage() {
                   </td>
                   <td style={{ padding: '14px' }}>
                     <Link
-                      href={`/government/applications/${app.id}`}
+                      to={`/government/applications/${app.id}`}
                       className="btn btn-primary btn-sm"
                     >
                       {app.status === 'QUERY_RESPONDED' ? 'Review Response' : 'Scrutinize Dossier'} <ArrowRight size={12} />

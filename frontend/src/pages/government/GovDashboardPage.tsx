@@ -121,7 +121,7 @@ export default function GovernmentDashboardPage() {
                 </td>
                 <td style={{ padding: '12px 14px' }}>
                   <Link
-                    href={`/government/applications/${application.id}`}
+                    to={`/government/applications/${application.id}`}
                     className="btn btn-primary btn-sm"
                   >
                     Scrutinize <ArrowRight size={12} />

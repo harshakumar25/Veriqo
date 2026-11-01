@@ -3,10 +3,10 @@
 // next/navigation usePathname → react-router-dom useLocation
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useAppStore } from '@/lib/use-app-store';
 import { DEMO_PERSONAS } from '@/lib/data/hero-data';
 import { UserCheck, RefreshCw } from 'lucide-react';
+import { BrandLogo } from '@/components/ui/BrandLogo';
 
 export const Navbar: React.FC = () => {
   const { currentPersona, setPersona, notifications, resetDemoData, business } = useAppStore();
@@ -30,32 +30,7 @@ export const Navbar: React.FC = () => {
       {/* Main App Navbar */}
       <div className="main-navbar">
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div
-              style={{
-                width: '34px',
-                height: '34px',
-                borderRadius: '6px',
-                background: '#1d4ed8',
-                color: '#fff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: '700',
-                fontSize: '16px',
-              }}
-            >
-              VQ
-            </div>
-            <div>
-              <div style={{ fontSize: '15px', fontWeight: '700', letterSpacing: '-0.2px', color: '#0f172a' }}>
-                Veriqo
-              </div>
-              <div style={{ fontSize: '11px', color: '#64748b', marginTop: '-2px' }}>
-                Intelligent Approval &amp; Compliance Platform
-              </div>
-            </div>
-          </Link>
+          <BrandLogo to="/" variant="light" />
 
           {/* Persona Mode Indicator */}
           <div

@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppStore } from '@/lib/use-app-store';
 import { StatusBadge } from '@/components/ui/StatusBadge';
+import { Modal } from '@/components/ui/Modal';
+import { formatFileSize } from '@/lib/formatters';
 import {
   Upload,
   FileText,
@@ -204,7 +206,7 @@ export default function DocumentVaultPage() {
                       <FileText size={14} />
                       <span>{doc.fileName}</span>
                     </div>
-                    <div style={{ fontSize: '11px', color: '#64748b' }}>{doc.fileSizeKb} KB</div>
+                    <div style={{ fontSize: '11px', color: '#64748b' }}>{formatFileSize(doc.fileSizeKb)}</div>
                   </td>
                   <td style={{ padding: '12px 14px' }}>
                     <StatusBadge status={doc.verificationStatus} />
@@ -228,129 +230,99 @@ export default function DocumentVaultPage() {
       </div>
 
       {/* Upload Modal Drawer */}
-      {showUploadModal && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(15, 23, 42, 0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 100,
-            padding: '20px',
-          }}
-        >
-          <div
-            className="card"
-            style={{
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-md)',
-              background: '#ffffff',
-            }}
-          >
-            <div className="card-header">
-              <div>
-                <div className="card-title">Upload Document to Vault</div>
-                <div className="card-subtitle">Add technical drawings or legal records</div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowUploadModal(false)}
-                style={{ background: 'none', border: 'none', fontSize: '18px', cursor: 'pointer', color: '#64748b' }}
-              >
-                ✕
-              </button>
-            </div>
-
-            <form onSubmit={handleUpload}>
-              <div className="form-group">
-                <label className="form-label">Document Purpose / Type *</label>
-                <select
-                  className="form-select"
-                  value={newDocCode}
-                  onChange={(e) => {
-                    setNewDocCode(e.target.value);
-                    if (e.target.value === 'PROCESS_FLOW') {
-                      setNewDocName('Process Flow Diagram');
-                      setNewFileName('FreshChain_Process_Flow_v1.pdf');
-                      setNewDocCategory('TECHNICAL');
-                    } else {
-                      setNewDocName(e.target.value.replace(/_/g, ' '));
-                    }
-                  }}
-                >
-                  <option value="PROCESS_FLOW">Process Flow Diagram (Required by FSSAI)</option>
-                  <option value="WATER_TEST_REPORT">Water Potability / Laboratory Test Report</option>
-                  <option value="EQUIPMENT_LIST">Refrigeration Machinery List & Specifications</option>
-                  <option value="OTHER_CERTIFICATE">Other Statutory Certificate</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Document Display Title *</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  value={newDocName}
-                  onChange={(e) => setNewDocName(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Category *</label>
-                <select
-                  className="form-select"
-                  value={newDocCategory}
-                  onChange={(e) => setNewDocCategory(e.target.value as any)}
-                >
-                  <option value="TECHNICAL">TECHNICAL (Drawings, Engineering & Flow)</option>
-                  <option value="LEGAL">LEGAL (Identity, Registration & Deeds)</option>
-                  <option value="LAND">LAND (Allotment, Survey & Titles)</option>
-                  <option value="FINANCIAL">FINANCIAL (DPR & Project Budgets)</option>
-                  <option value="ENVIRONMENTAL">ENVIRONMENTAL (Pollution & Hazards)</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Select File to Upload (PDF / Drawing) *</label>
-                <div
-                  style={{
-                    border: '2px dashed #cbd5e1',
-                    borderRadius: '6px',
-                    padding: '20px',
-                    textAlign: 'center',
-                    background: '#f8fafc',
-                  }}
-                >
-                  <Upload size={24} color="#1d4ed8" style={{ margin: '0 auto 8px' }} />
-                  <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>
-                    {newFileName}
-                  </div>
-                  <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>
-                    Simulated secure upload (PDF, max 15MB)
-                  </div>
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '20px' }}>
-                <button
-                  type="button"
-                  onClick={() => setShowUploadModal(false)}
-                  className="btn btn-secondary"
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  <Upload size={14} /> Confirm & Upload to Vault
-                </button>
-              </div>
-            </form>
+      <Modal
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+        title="Upload Document to Vault"
+        subtitle="Add technical drawings or legal records"
+        maxWidth="520px"
+        footer={
+          <>
+            <button
+              type="button"
+              onClick={() => setShowUploadModal(false)}
+              className="btn btn-secondary"
+            >
+              Cancel
+            </button>
+            <button type="submit" form="vault-upload-form" className="btn btn-primary">
+              <Upload size={14} /> Confirm &amp; Upload to Vault
+            </button>
+          </>
+        }
+      >
+        <form id="vault-upload-form" onSubmit={handleUpload}>
+          <div className="form-group">
+            <label className="form-label">Document Purpose / Type *</label>
+            <select
+              className="form-select"
+              value={newDocCode}
+              onChange={(e) => {
+                setNewDocCode(e.target.value);
+                if (e.target.value === 'PROCESS_FLOW') {
+                  setNewDocName('Process Flow Diagram');
+                  setNewFileName('FreshChain_Process_Flow_v1.pdf');
+                  setNewDocCategory('TECHNICAL');
+                } else {
+                  setNewDocName(e.target.value.replace(/_/g, ' '));
+                }
+              }}
+            >
+              <option value="PROCESS_FLOW">Process Flow Diagram (Required by FSSAI)</option>
+              <option value="WATER_TEST_REPORT">Water Potability / Laboratory Test Report</option>
+              <option value="EQUIPMENT_LIST">Refrigeration Machinery List &amp; Specifications</option>
+              <option value="OTHER_CERTIFICATE">Other Statutory Certificate</option>
+            </select>
           </div>
-        </div>
-      )}
+
+          <div className="form-group">
+            <label className="form-label">Document Display Title *</label>
+            <input
+              type="text"
+              className="form-input"
+              value={newDocName}
+              onChange={(e) => setNewDocName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Category *</label>
+            <select
+              className="form-select"
+              value={newDocCategory}
+              onChange={(e) => setNewDocCategory(e.target.value as any)}
+            >
+              <option value="TECHNICAL">TECHNICAL (Drawings, Engineering &amp; Flow)</option>
+              <option value="LEGAL">LEGAL (Identity, Registration &amp; Deeds)</option>
+              <option value="LAND">LAND (Allotment, Survey &amp; Titles)</option>
+              <option value="FINANCIAL">FINANCIAL (DPR &amp; Project Budgets)</option>
+              <option value="ENVIRONMENTAL">ENVIRONMENTAL (Pollution &amp; Hazards)</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Select File to Upload (PDF / Drawing) *</label>
+            <div
+              style={{
+                border: '2px dashed #cbd5e1',
+                borderRadius: '6px',
+                padding: '20px',
+                textAlign: 'center',
+                background: '#f8fafc',
+              }}
+            >
+              <Upload size={24} color="#1d4ed8" style={{ margin: '0 auto 8px' }} />
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#0f172a' }}>
+                {newFileName}
+              </div>
+              <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>
+                Simulated secure upload (PDF, max 15MB)
+              </div>
+            </div>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 }

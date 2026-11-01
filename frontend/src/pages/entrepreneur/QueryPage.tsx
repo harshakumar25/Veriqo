@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppStore } from '@/lib/use-app-store';
 import { StatusBadge } from '@/components/ui/StatusBadge';
+import { formatDateTime } from '@/lib/formatters';
 import {
   Upload,
   Send,
@@ -93,7 +94,7 @@ export default function QueryDetailPage() {
               <ShieldAlert size={18} color="#b45309" /> Official Department Request
             </div>
             <div className="card-subtitle">
-              Logged on {new Date(query.createdAt).toLocaleString()}
+              Logged on {formatDateTime(query.createdAt)}
             </div>
           </div>
         </div>

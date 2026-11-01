@@ -26,9 +26,10 @@ import {
 } from './data/hero-data';
 import { AppContext } from './app-context';
 import { supabase, isSupabaseConfigured } from './supabase';
+import { appStorage } from './services/storage.service';
+import { createApplicationEvent } from './services/audit.service';
 
 const STORAGE_KEY = 'veriqo_state_v1';
-const LEGACY_STORAGE_KEY = 'buildx_sih_state_v1';
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Initialize to Verified Final Stage 5/6 Hero State by default
@@ -82,21 +83,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
   }, []);
 
-  // Load from LocalStorage on mount
+  // Load from Storage on mount
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
+      const saved = appStorage.getItem<Record<string, any>>(STORAGE_KEY);
       if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed.business) setBusiness(parsed.business);
-        if (parsed.documents) setDocuments(parsed.documents);
-        if (parsed.application) setApplication(parsed.application);
-        if (parsed.events) setEvents(parsed.events);
-        if (parsed.queries) setQueries(parsed.queries);
-        if (parsed.inspection !== undefined) setInspection(parsed.inspection);
-        if (parsed.notifications) setNotifications(parsed.notifications);
-        if (parsed.personaId) {
-          const p = DEMO_PERSONAS.find((item) => item.id === parsed.personaId);
+        if (saved.business) setBusiness(saved.business);
+        if (saved.documents) setDocuments(saved.documents);
+        if (saved.application) setApplication(saved.application);
+        if (saved.events) setEvents(saved.events);
+        if (saved.queries) setQueries(saved.queries);
+        if (saved.inspection !== undefined) setInspection(saved.inspection);
+        if (saved.notifications) setNotifications(saved.notifications);
+        if (saved.personaId) {
+          const p = DEMO_PERSONAS.find((item) => item.id === saved.personaId);
           if (p) setCurrentPersona(p);
         }
       } else {
@@ -118,7 +118,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Save state changes to LocalStorage
+  // Save state changes via Storage service abstraction
   const persistState = (overrides: Partial<Record<string, unknown>> = {}) => {
     try {
       const stateToSave = {
@@ -132,7 +132,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         personaId: currentPersona.id,
         ...overrides,
       };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
+      appStorage.setItem(STORAGE_KEY, stateToSave);
     } catch (e) {
       console.warn('Could not persist state', e);
     }
@@ -236,11 +236,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const addEvent = (event: Omit<ApplicationEvent, 'id' | 'createdAt'>) => {
-    const newEvt: ApplicationEvent = {
-      ...event,
-      id: 'evt-' + Math.random().toString(36).substring(2, 9),
-      createdAt: new Date().toISOString(),
-    };
+    const newEvt = createApplicationEvent({
+      applicationId: event.applicationId,
+      actorRole: event.actorRole,
+      actorName: event.actorName,
+      eventType: event.eventType,
+      title: event.title,
+      description: event.description,
+    });
     setEvents((prev) => {
       const updated = [newEvt, ...prev];
       persistState({ events: updated });
@@ -492,8 +495,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const resetDemoData = (mode: 'APPROVED' | 'DRAFT' = 'APPROVED') => {
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(LEGACY_STORAGE_KEY);
+    appStorage.removeItem(STORAGE_KEY);
     if (mode === 'DRAFT') {
       const draftApp = { ...DRAFT_HERO_APPLICATION };
       const draftDocs = [...BASE_VAULT_DOCUMENTS];

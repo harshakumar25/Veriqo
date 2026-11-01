@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppStore } from '@/lib/use-app-store';
 import { evaluateApprovalRules } from '@/lib/rule-engine';
+import { formatCurrencyINR } from '@/lib/formatters';
 import {
   SlidersHorizontal,
   ArrowRight,
@@ -93,7 +94,7 @@ export default function ApprovalIntelligencePage() {
           </div>
           <div>
             <span style={{ color: '#64748b' }}>Total Capital Investment:</span>
-            <div style={{ fontWeight: '600', color: '#0f172a' }}>₹{(business.totalInvestmentInr / 10000000).toFixed(2)} Crores</div>
+            <div style={{ fontWeight: '600', color: '#0f172a' }}>{formatCurrencyINR(business.totalInvestmentInr)}</div>
           </div>
           <div>
             <span style={{ color: '#64748b' }}>Project Stage:</span>

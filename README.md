@@ -352,38 +352,53 @@ Veriqo/
 │   ├── 18_GOVERNMENT_ANALYTICS_SPEC.md      # Heatmap & Bottleneck Analytics Spec
 │   └── PRODUCT SPECIFICATION.md             # Master Parent Specification (Locked)
 │
-├── frontend/                                # Single-Page React Application
+├── frontend/                                # Single-Page React Application (SOLID Architecture)
 │   ├── src/
-│   │   ├── components/                      # UI Component Library
+│   │   ├── components/                      # Modular UI Component Library
 │   │   │   ├── layout/                      # Universal Navbar & Dual-Persona Sidebar
-│   │   │   ├── ui/                          # Status Badges, KPI Cards, Modals
+│   │   │   ├── ui/                          # Reusable Primitives (Modal, StatusBadge, BrandLogo, KpiCard)
 │   │   │   └── ...                          # Landing page sections (Hero, Sectors, Features)
 │   │   │
 │   │   ├── Pages/                           # Route Views & Personas
 │   │   │   ├── LandingPage.jsx              # Public Portal & Gov of Maharashtra Brand
 │   │   │   ├── HomePage.tsx                 # Portal Overview & Hero Spotlight
 │   │   │   ├── entrepreneur/                # Entrepreneur Workspace
+│   │   │   │   ├── components/              # Sub-Form Sections & Modals (SRP)
 │   │   │   │   ├── DashboardPage.tsx        # Action-First Journey Tracker
 │   │   │   │   ├── BusinessProfilePage.tsx  # 20-Field Industrial Profile Form
 │   │   │   │   ├── IntelligencePage.tsx     # Rule Engine Applicability Analysis
 │   │   │   │   ├── RoadmapPage.tsx          # Interactive React Flow DAG Canvas
-│   │   │   │   ├── ApplicationPage.tsx      # FSSAI Form & Pre-Validation Blocker
+│   │   │   │   ├── ApplicationPage.tsx      # FSSAI Form & Pre-Validation Orchestrator
 │   │   │   │   ├── VaultPage.tsx            # Canonical Document Vault
 │   │   │   │   ├── QueryPage.tsx            # Department Query Desk
 │   │   │   │   └── IncentivesPage.tsx       # PSI 2019 Incentive Screening
 │   │   │   │
 │   │   │   └── government/                  # Government Scrutiny Workspace
+│   │   │       ├── components/              # Scrutiny Tabs & Dedicated Modals (SRP)
 │   │   │       ├── GovDashboardPage.tsx     # Officer Queue & Bayesian Risk Triage
 │   │   │       ├── ApplicationsPage.tsx     # Department Dossier Queue
 │   │   │       ├── ApplicationDetailPage.tsx# Split-Screen Diff, Inspection & Decision
 │   │   │       └── AnalyticsPage.tsx        # SLA Performance & Bottleneck Heatmap
 │   │   │
-│   │   ├── lib/                             # Engineering Engines & Core State
+│   │   ├── lib/                             # Core Domain Engines & Services
+│   │   │   ├── formatters.ts                # Centralized Formatting Utilities (DRY)
+│   │   │   ├── services/                    # Clean Service Layer (DIP / SRP)
+│   │   │   │   ├── storage.service.ts       # IStorageService LocalStorage Abstraction
+│   │   │   │   ├── audit.service.ts         # Immutable Audit Event Factory
+│   │   │   │   └── review-gates.service.ts  # Statutory Quality Gates Evaluator (OCP)
+│   │   │   ├── hooks/                       # Domain-Scoped Segregated Hooks (ISP)
+│   │   │   │   ├── use-current-persona.ts   # Persona Switching
+│   │   │   │   ├── use-business-profile.ts  # Industrial Entity State
+│   │   │   │   ├── use-vault.ts             # Vault Document Management
+│   │   │   │   ├── use-application-workflow.ts # State Machine Transitions
+│   │   │   │   ├── use-queries.ts           # Query Negotiation Loop
+│   │   │   │   ├── use-inspection.ts        # Joint CIS-NX Coordination
+│   │   │   │   └── use-notifications.ts     # Action Alerts & Badges
 │   │   │   ├── approval-graph.ts            # DAG Nodes, Topological Sort & Dependencies
 │   │   │   ├── rule-engine.ts               # Declarative Rule Evaluation Matrix
 │   │   │   ├── store.tsx                    # React Context State Engine & Optimistic Bus
 │   │   │   ├── types.ts                     # Strict TypeScript Data Interfaces
-│   │   │   ├── supabase.ts                  # Supabase Client & Graceful Offline Fallback
+│   │   │   ├── supabase.ts                  # Supabase Client & Offline Fallback
 │   │   │   ├── data/hero-data.ts            # FreshChain Cold Logistics Verified Vectors
 │   │   │   └── prevalidation/               # Zero-Dependency 3-Level Pre-Validation Engine
 │   │   │       ├── engine.ts                # Main Pre-Validation Orchestrator

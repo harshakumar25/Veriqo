@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppStore } from '@/lib/use-app-store';
 import { SECTORS_DATA } from '@/lib/data/hero-data';
+import { formatCurrencyINR } from '@/lib/formatters';
 import {
   Building2,
   MapPin,
@@ -381,7 +382,7 @@ export default function BusinessProfilePage() {
                 onChange={(e) => handleChange('totalInvestmentInr', Number(e.target.value))}
                 required
               />
-              <span style={{ fontSize: '11px', color: '#64748b' }}>₹{(formData.totalInvestmentInr / 10000000).toFixed(2)} Crores</span>
+              <span style={{ fontSize: '11px', color: '#64748b' }}>{formatCurrencyINR(formData.totalInvestmentInr)}</span>
             </div>
 
             <div className="form-group">
