@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/lib/use-app-store';
-import './CTASection.css';
+import './Footer.css';
 
 export default function Footer({ onOpenAuth }) {
   const navigate = useNavigate();
@@ -30,83 +30,99 @@ export default function Footer({ onOpenAuth }) {
   };
 
   return (
-    <footer className="footer">
-      <div className="container">
-        <div className="footer-grid">
-          {/* Brand */}
-          <div>
-            <div className="footer-brand-logo">
-              <div className="footer-brand-mark">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                  <polyline points="9 22 9 12 15 12 15 22"/>
+    <footer className="ref-footer">
+      <div className="ref-footer-container">
+        <div className="ref-footer-grid">
+          {/* Brand Identity */}
+          <div className="ref-footer-brand-col">
+            <div className="ref-footer-brand-logo">
+              <div className="ref-footer-emblem" aria-hidden="true">
+                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+                  <circle cx="18" cy="18" r="14" stroke="#f59e0b" strokeWidth="1.8" />
+                  <circle cx="18" cy="18" r="3.2" fill="#f59e0b" />
+                  {Array.from({ length: 24 }, (_, i) => {
+                    const angle = (i * 15 - 90) * (Math.PI / 180);
+                    return (
+                      <line
+                        key={i}
+                        x1={18 + 3.4 * Math.cos(angle)}
+                        y1={18 + 3.4 * Math.sin(angle)}
+                        x2={18 + 12.0 * Math.cos(angle)}
+                        y2={18 + 12.0 * Math.sin(angle)}
+                        stroke="#f59e0b"
+                        strokeWidth="1.1"
+                      />
+                    );
+                  })}
                 </svg>
               </div>
-              <div className="footer-brand-text">
-                <div className="footer-brand-name">Build<span className="footer-brand-name-x">X</span></div>
-                <div className="footer-brand-tagline">Maharashtra · SIH 2026</div>
+              <div className="ref-footer-brand-text">
+                <span className="ref-footer-brand-name">
+                  Veriq<span className="ref-brand-accent">o</span>
+                </span>
+                <span className="ref-footer-gov-label">GOVERNMENT OF MAHARASHTRA</span>
               </div>
             </div>
 
-            <p className="footer-brand-desc">
+            <p className="ref-footer-desc">
               Intelligent Approval &amp; Compliance Management Platform for Maharashtra businesses.
               One profile. Every approval. No more fragmented visits.
             </p>
 
-            <div className="footer-pills">
-              <span className="footer-pill">SIH 2026</span>
-              <span className="footer-pill">Problem #26130</span>
-              <span className="footer-pill">Maharashtra Gov</span>
+            <div className="ref-footer-pills">
+              <span className="ref-footer-pill">Smart India Hackathon</span>
+              <span className="ref-footer-pill">Problem #26130</span>
+              <span className="ref-footer-pill">Maharashtra Prototype</span>
             </div>
           </div>
 
-          {/* Platform */}
-          <div>
-            <div className="footer-col-title">Platform</div>
-            <div className="footer-links">
+          {/* Platform Navigation */}
+          <div className="ref-footer-links-col">
+            <h4 className="ref-footer-col-title">Platform</h4>
+            <div className="ref-footer-links">
               <a href="#how-it-works">How It Works</a>
               <a href="#features">Features</a>
-              <a href="#sectors">Sectors Covered</a>
+              <a href="#sectors">Sector Coverage</a>
               <a href="#about">About Prototype</a>
             </div>
           </div>
 
-          {/* Entrepreneurs */}
-          <div>
-            <div className="footer-col-title">Entrepreneurs</div>
-            <div className="footer-links">
-              <span onClick={(e) => handleEntrepreneurAction('/business-profile', e)} style={{ cursor: 'pointer' }}>Create Account / Profile</span>
-              <span onClick={(e) => handleEntrepreneurAction('/dashboard', e)} style={{ cursor: 'pointer' }}>Entrepreneur Dashboard</span>
-              <span onClick={(e) => handleEntrepreneurAction('/roadmap', e)} style={{ cursor: 'pointer' }}>My Roadmap</span>
-              <span onClick={(e) => handleEntrepreneurAction('/vault', e)} style={{ cursor: 'pointer' }}>Document Vault</span>
+          {/* Entrepreneurs Column */}
+          <div className="ref-footer-links-col">
+            <h4 className="ref-footer-col-title">Entrepreneurs</h4>
+            <div className="ref-footer-links">
+              <span onClick={(e) => handleEntrepreneurAction('/business-profile', e)}>Create Business Profile</span>
+              <span onClick={(e) => handleEntrepreneurAction('/dashboard', e)}>Entrepreneur Dashboard</span>
+              <span onClick={(e) => handleEntrepreneurAction('/roadmap', e)}>Personalized Roadmap</span>
+              <span onClick={(e) => handleEntrepreneurAction('/vault', e)}>Document Vault</span>
             </div>
           </div>
 
-          {/* Government */}
-          <div>
-            <div className="footer-col-title">Government</div>
-            <div className="footer-links">
-              <span onClick={handleOfficerLogin} style={{ cursor: 'pointer' }}>Officer Login</span>
-              <span onClick={(e) => handleGovAction('/government/applications', e)} style={{ cursor: 'pointer' }}>Application Scrutiny</span>
-              <span onClick={(e) => handleGovAction('/government/analytics', e)} style={{ cursor: 'pointer' }}>Analytics Dashboard</span>
-              <span onClick={(e) => handleGovAction('/government/dashboard', e)} style={{ cursor: 'pointer' }}>Single Window Portal</span>
+          {/* Government Column */}
+          <div className="ref-footer-links-col">
+            <h4 className="ref-footer-col-title">Government</h4>
+            <div className="ref-footer-links">
+              <span onClick={handleOfficerLogin}>Officer Login</span>
+              <span onClick={(e) => handleGovAction('/government/applications', e)}>Application Scrutiny</span>
+              <span onClick={(e) => handleGovAction('/government/analytics', e)}>Analytics &amp; SLA Alerts</span>
+              <span onClick={(e) => handleGovAction('/government/dashboard', e)}>Single Window Portal</span>
             </div>
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="footer-bottom">
-          <div className="footer-bottom-left">
-            <span className="footer-copy">
-              © 2026 Veriqo · Smart India Hackathon Prototype
+        {/* Footer Bottom Bar */}
+        <div className="ref-footer-bottom">
+          <div className="ref-footer-bottom-left">
+            <span className="ref-footer-copy">
+              © 2026 Veriqo · Government of Maharashtra Single Window Prototype
             </span>
-            <span className="footer-disclaimer">
-              Not an official government portal. Built for SIH 2026 demonstration purposes.
+            <span className="ref-footer-disclaimer">
+              Built for Smart India Hackathon 2026 (Problem Statement 26130).
             </span>
           </div>
-          <div className="footer-live">
-            <span className="footer-live-dot" />
-            Maharashtra Prototype · Live
+          <div className="ref-footer-live">
+            <span className="ref-live-pulse-dot" />
+            <span>Operational · Live Prototype</span>
           </div>
         </div>
       </div>

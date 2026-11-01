@@ -30,3 +30,4 @@ export function useInspection(): UseInspectionReturn {
     isSatisfactory: inspection?.outcome === 'SATISFACTORY',
   };
 }
+

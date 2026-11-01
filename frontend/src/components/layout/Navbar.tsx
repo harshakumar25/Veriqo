@@ -16,13 +16,13 @@ export const Navbar: React.FC = () => {
 
   return (
     <header>
-      {/* Official Government Header Banner */}
+      {/* Institutional Prototype Header Banner */}
       <div className="gov-topbar">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span>GOVERNMENT OF MAHARASHTRA • INDUSTRY &amp; SINGLE WINDOW CLEARANCE PORTAL</span>
+          <span>MAHARASHTRA BUSINESS APPROVAL PROTOTYPE • SIH 26130 SINGLE WINDOW DEMONSTRATION</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <span>SIH 26130 PROTOTYPE</span>
+          <span>DEMO WORKSPACE ACTIVE</span>
           <span>LOCATION: PUNE (MIDC CHAKAN)</span>
         </div>
       </div>

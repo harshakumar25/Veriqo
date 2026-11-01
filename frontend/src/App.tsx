@@ -1,30 +1,41 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppProvider } from '@/lib/store';
 import { Navbar } from '@/components/layout/Navbar';
 import { Sidebar } from '@/components/layout/Sidebar';
+import { lazyWithRetry } from '@/lib/lazy-with-retry';
+import { RouteErrorBoundary } from '@/components/ui/RouteErrorBoundary';
 
-// Code-split pages for faster initial load
-const LandingPage = lazy(() => import('@/Pages/LandingPage'));
-const DashboardPage = lazy(() => import('@/Pages/entrepreneur/DashboardPage'));
-const BusinessProfilePage = lazy(() => import('@/Pages/entrepreneur/BusinessProfilePage'));
-const IntelligencePage = lazy(() => import('@/Pages/entrepreneur/IntelligencePage'));
-const RoadmapPage = lazy(() => import('@/Pages/entrepreneur/RoadmapPage'));
-const ApplicationPage = lazy(() => import('@/Pages/entrepreneur/ApplicationPage'));
-const VaultPage = lazy(() => import('@/Pages/entrepreneur/VaultPage'));
-const QueryPage = lazy(() => import('@/Pages/entrepreneur/QueryPage'));
-const IncentivesPage = lazy(() => import('@/Pages/entrepreneur/IncentivesPage'));
-const GovDashboardPage = lazy(() => import('@/Pages/government/GovDashboardPage'));
-const ApplicationsPage = lazy(() => import('@/Pages/government/ApplicationsPage'));
-const ApplicationDetailPage = lazy(() => import('@/Pages/government/ApplicationDetailPage'));
-const AnalyticsPage = lazy(() => import('@/Pages/government/AnalyticsPage'));
+// Code-split pages with resilient retry mechanism and unified lowercase paths
+const LandingPage = lazyWithRetry(() => import('@/pages/LandingPage'), 'landing');
+const DashboardPage = lazyWithRetry(() => import('@/pages/entrepreneur/DashboardPage'), 'dashboard');
+const BusinessProfilePage = lazyWithRetry(() => import('@/pages/entrepreneur/BusinessProfilePage'), 'profile');
+const IntelligencePage = lazyWithRetry(() => import('@/pages/entrepreneur/IntelligencePage'), 'intelligence');
+const RoadmapPage = lazyWithRetry(() => import('@/pages/entrepreneur/RoadmapPage'), 'roadmap');
+const ApplicationPage = lazyWithRetry(() => import('@/pages/entrepreneur/ApplicationPage'), 'application');
+const VaultPage = lazyWithRetry(() => import('@/pages/entrepreneur/VaultPage'), 'vault');
+const QueryPage = lazyWithRetry(() => import('@/pages/entrepreneur/QueryPage'), 'query');
+const IncentivesPage = lazyWithRetry(() => import('@/pages/entrepreneur/IncentivesPage'), 'incentives');
+const GovDashboardPage = lazyWithRetry(() => import('@/pages/government/GovDashboardPage'), 'gov-dashboard');
+const ApplicationsPage = lazyWithRetry(() => import('@/pages/government/ApplicationsPage'), 'gov-applications');
+const ApplicationDetailPage = lazyWithRetry(() => import('@/pages/government/ApplicationDetailPage'), 'gov-app-detail');
+const AnalyticsPage = lazyWithRetry(() => import('@/pages/government/AnalyticsPage'), 'gov-analytics');
 
 function PageLoader() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '300px', color: '#64748b' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: 500 }}>
-        <div style={{ width: '16px', height: '16px', border: '2px solid #cbd5e1', borderTopColor: '#0284c7', borderRadius: '50%', animation: 'spin 0.6s linear infinite' }} />
-        <span>Loading...</span>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '340px', color: '#64748b' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', fontWeight: 500 }}>
+        <div
+          style={{
+            width: '18px',
+            height: '18px',
+            border: '2.5px solid #cbd5e1',
+            borderTopColor: '#f97316',
+            borderRadius: '50%',
+            animation: 'spin 0.6s linear infinite',
+          }}
+        />
+        <span>Loading workspace module...</span>
       </div>
     </div>
   );
@@ -37,9 +48,11 @@ function AppLayout({ children }: { children: React.ReactNode }) {
       <div style={{ display: 'flex', flex: 1, minHeight: 'calc(100vh - 85px)' }}>
         <Sidebar />
         <main className="main-content">
-          <Suspense fallback={<PageLoader />}>
-            {children}
-          </Suspense>
+          <RouteErrorBoundary>
+            <Suspense fallback={<PageLoader />}>
+              {children}
+            </Suspense>
+          </RouteErrorBoundary>
         </main>
       </div>
     </div>
@@ -48,9 +61,11 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 
 function LandingLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Suspense fallback={<PageLoader />}>
-      {children}
-    </Suspense>
+    <RouteErrorBoundary fallbackTitle="Unable to load landing page">
+      <Suspense fallback={<PageLoader />}>
+        {children}
+      </Suspense>
+    </RouteErrorBoundary>
   );
 }
 

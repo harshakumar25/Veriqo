@@ -85,3 +85,4 @@ export class LocalStorageService implements IStorageService {
 export const appStorage = new LocalStorageService({
   veriqo_state_v1: 'buildx_sih_state_v1',
 });
+

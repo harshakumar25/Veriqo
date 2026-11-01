@@ -155,7 +155,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const addDocument = (doc: Omit<VaultDocument, 'id' | 'uploadedAt'>): VaultDocument => {
     const newDoc: VaultDocument = {
       ...doc,
-      id: 'doc-' + Math.random().toString(36).substring(2, 9),
+      id: `doc-${crypto.randomUUID()}`,
       uploadedAt: new Date().toISOString(),
     };
     setDocuments((prev) => {
@@ -163,6 +163,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       persistState({ documents: updated });
       return updated;
     });
+    if (isSupabaseConfigured()) {
+      supabase.from('documents').insert({
+        id: newDoc.id,
+        business_id: newDoc.businessId,
+        doc_code: newDoc.docCode,
+        doc_name: newDoc.docName,
+        category: newDoc.category,
+        file_name: newDoc.fileName,
+        file_size_kb: newDoc.fileSizeKb,
+        file_url: newDoc.fileUrl,
+        verification_status: newDoc.verificationStatus,
+        uploaded_at: newDoc.uploadedAt,
+      }).then(({ error }) => {
+        if (error) console.warn('[Veriqo] Supabase document insert failed:', error.message);
+      });
+    }
     return newDoc;
   };
 
@@ -214,6 +230,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return updated;
     });
 
+    if (isSupabaseConfigured()) {
+      supabase.from('applications')
+        .update({ status: 'SUBMITTED', submitted_at: submissionTime, updated_at: submissionTime })
+        .eq('id', application.id)
+        .then(({ error }) => {
+          if (error) console.warn('[Veriqo] Supabase submit failed:', error.message);
+        });
+    }
+
     addEvent({
       applicationId: application.id,
       actorRole: 'ENTREPRENEUR',
@@ -224,7 +249,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
 
     const notif: NotificationItem = {
-      id: 'notif-' + Math.random().toString(36).substring(2, 9),
+      id: `notif-${crypto.randomUUID()}`,
       title: `Application ${application.appNumber} Submitted Successfully`,
       message: `Your FSSAI Central Licence application has been submitted to the scrutiny queue.`,
       type: 'SUCCESS',
@@ -232,7 +257,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       isRead: false,
       createdAt: submissionTime,
     };
-    setNotifications((prev) => [notif, ...prev]);
+    setNotifications((prev) => {
+      const updated = [notif, ...prev];
+      persistState({ notifications: updated });
+      return updated;
+    });
   };
 
   const addEvent = (event: Omit<ApplicationEvent, 'id' | 'createdAt'>) => {
@@ -249,11 +278,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       persistState({ events: updated });
       return updated;
     });
+    if (isSupabaseConfigured()) {
+      supabase.from('application_events').insert({
+        id: newEvt.id,
+        application_id: newEvt.applicationId,
+        actor_role: newEvt.actorRole,
+        actor_name: newEvt.actorName,
+        event_type: newEvt.eventType,
+        title: newEvt.title,
+        description: newEvt.description,
+      }).then(({ error }) => {
+        if (error) console.warn('[Veriqo] Supabase event insert failed:', error.message);
+      });
+    }
   };
 
   const addQuery = (title: string, text: string) => {
     const newQuery: QueryRecord = {
-      id: 'query-' + Math.random().toString(36).substring(2, 9),
+      id: `query-${crypto.randomUUID()}`,
       applicationId: application.id,
       officerName: currentPersona.name,
       title,
@@ -266,6 +308,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       persistState({ queries: updated });
       return updated;
     });
+    if (isSupabaseConfigured()) {
+      supabase.from('queries').insert({
+        id: newQuery.id,
+        application_id: newQuery.applicationId,
+        officer_name: newQuery.officerName,
+        title: newQuery.title,
+        query_text: newQuery.queryText,
+        status: newQuery.status,
+      }).then(({ error }) => {
+        if (error) console.warn('[Veriqo] Supabase query insert failed:', error.message);
+      });
+    }
     updateApplicationStatus('QUERY_RAISED');
     addEvent({
       applicationId: application.id,
@@ -277,7 +331,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
     // Add Notification for entrepreneur
     const notif: NotificationItem = {
-      id: 'notif-' + Math.random().toString(36).substring(2, 9),
+      id: `notif-${crypto.randomUUID()}`,
       title: `Action Required: Query Raised on ${application.appNumber}`,
       message: `The department requested: "${title}". Please upload the requested clarification.`,
       type: 'ACTION_REQUIRED',
@@ -285,10 +339,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       isRead: false,
       createdAt: new Date().toISOString(),
     };
-    setNotifications((prev) => [notif, ...prev]);
+    setNotifications((prev) => {
+      const updated = [notif, ...prev];
+      persistState({ notifications: updated });
+      return updated;
+    });
   };
 
   const respondToQuery = (queryId: string, responseText: string, docId?: string) => {
+    const respId = `resp-${crypto.randomUUID()}`;
+    const submittedAt = new Date().toISOString();
+
     setQueries((prev) =>
       prev.map((q) =>
         q.id === queryId
@@ -296,16 +357,33 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               ...q,
               status: 'RESPONDED' as const,
               response: {
-                id: 'resp-' + Math.random().toString(36).substring(2, 9),
+                id: respId,
                 queryId,
                 responseText,
                 documentId: docId,
-                submittedAt: new Date().toISOString(),
+                submittedAt,
               },
             }
           : q
       )
     );
+
+    if (isSupabaseConfigured()) {
+      supabase.from('query_responses').insert({
+        id: respId,
+        query_id: queryId,
+        response_text: responseText,
+        document_id: docId ?? null,
+        submitted_at: submittedAt,
+      }).then(({ error }) => {
+        if (error) console.warn('[Veriqo] Supabase query_response insert failed:', error.message);
+      });
+      supabase.from('queries').update({ status: 'RESPONDED' }).eq('id', queryId)
+        .then(({ error }) => {
+          if (error) console.warn('[Veriqo] Supabase query status update failed:', error.message);
+        });
+    }
+
     updateApplicationStatus('QUERY_RESPONDED');
     addEvent({
       applicationId: application.id,
@@ -317,20 +395,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
     // Add notification for officer
     const notif: NotificationItem = {
-      id: 'notif-' + Math.random().toString(36).substring(2, 9),
+      id: `notif-${crypto.randomUUID()}`,
       title: `Query Response Received for ${application.appNumber}`,
       message: `Applicant has submitted a response and attached requested documentation.`,
       type: 'INFO',
       linkUrl: `/government/applications/${application.id}`,
       isRead: false,
-      createdAt: new Date().toISOString(),
+      createdAt: submittedAt,
     };
-    setNotifications((prev) => [notif, ...prev]);
+    setNotifications((prev) => {
+      const updated = [notif, ...prev];
+      persistState({ notifications: updated });
+      return updated;
+    });
   };
 
   const scheduleInspection = (date: string, time: string, location: string) => {
     const insp: InspectionRecord = {
-      id: 'insp-001',
+      id: `insp-${crypto.randomUUID()}`,
       applicationId: application.id,
       officerName: currentPersona.name,
       scheduledDate: date,
@@ -341,6 +423,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       createdAt: new Date().toISOString(),
     };
     setInspection(insp);
+    if (isSupabaseConfigured()) {
+      supabase.from('inspections').insert({
+        id: insp.id,
+        application_id: insp.applicationId,
+        officer_name: insp.officerName,
+        scheduled_date: insp.scheduledDate,
+        scheduled_time: insp.scheduledTime,
+        location: insp.location,
+        status: 'SCHEDULED',
+        outcome: 'PENDING',
+      }).then(({ error }) => {
+        if (error) console.warn('[Veriqo] Supabase inspection schedule failed:', error.message);
+      });
+    }
     updateApplicationStatus('INSPECTION_SCHEDULED');
     addEvent({
       applicationId: application.id,
@@ -351,7 +447,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       description: `Official site verification scheduled for ${date} at ${time} by ${currentPersona.name}.`,
     });
     const notif: NotificationItem = {
-      id: 'notif-' + Math.random().toString(36).substring(2, 9),
+      id: `notif-${crypto.randomUUID()}`,
       title: `Site Inspection Scheduled for ${date}`,
       message: `Joint site inspection for ${application.appNumber} scheduled at ${time}.`,
       type: 'INFO',
@@ -359,7 +455,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       isRead: false,
       createdAt: new Date().toISOString(),
     };
-    setNotifications((prev) => [notif, ...prev]);
+    setNotifications((prev) => {
+      const updated = [notif, ...prev];
+      persistState({ notifications: updated });
+      return updated;
+    });
   };
 
   const startInspection = () => {
@@ -392,6 +492,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           }
         : null
     );
+    if (isSupabaseConfigured() && inspection) {
+      supabase.from('inspections').update({
+        status: 'COMPLETED',
+        outcome,
+        remarks,
+        checklist: checklist ?? inspection.checklist,
+        completed_at: completionTime,
+        updated_at: completionTime,
+      }).eq('id', inspection.id)
+        .then(({ error }) => {
+          if (error) console.warn('[Veriqo] Supabase inspection complete failed:', error.message);
+        });
+    }
     updateApplicationStatus('INSPECTION_COMPLETED');
     addEvent({
       applicationId: application.id,
@@ -403,7 +516,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
 
     const notif: NotificationItem = {
-      id: 'notif-' + Math.random().toString(36).substring(2, 9),
+      id: `notif-${crypto.randomUUID()}`,
       title: `Site Inspection Completed (Outcome: ${outcome})`,
       message: `Officer recorded inspection outcome as ${outcome}. Application moved to Final Review.`,
       type: outcome === 'SATISFACTORY' ? 'SUCCESS' : 'WARNING',
@@ -411,7 +524,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       isRead: false,
       createdAt: completionTime,
     };
-    setNotifications((prev) => [notif, ...prev]);
+    setNotifications((prev) => {
+      const updated = [notif, ...prev];
+      persistState({ notifications: updated });
+      return updated;
+    });
   };
 
   const resolveQuery = (queryId: string) => {
@@ -434,6 +551,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return updated;
     });
 
+    if (isSupabaseConfigured()) {
+      supabase.from('applications').update({
+        status: 'APPROVED',
+        decision_reason: referenceNumber,
+        decided_at: decisionTime,
+        updated_at: decisionTime,
+      }).eq('id', application.id)
+        .then(({ error }) => {
+          if (error) console.warn('[Veriqo] Supabase application decision failed:', error.message);
+        });
+    }
+
     addEvent({
       applicationId: application.id,
       actorRole: 'OFFICER',
@@ -444,7 +573,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
 
     const notif: NotificationItem = {
-      id: 'notif-' + Math.random().toString(36).substring(2, 9),
+      id: `notif-${crypto.randomUUID()}`,
       title: `Application ${application.appNumber} APPROVED!`,
       message: `FSSAI Central Licence has been approved. Reference: ${referenceNumber}. Active compliance tracking is now enabled.`,
       type: 'SUCCESS',
@@ -452,7 +581,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       isRead: false,
       createdAt: decisionTime,
     };
-    setNotifications((prev) => [notif, ...prev]);
+    setNotifications((prev) => {
+      const updated = [notif, ...prev];
+      persistState({ notifications: updated });
+      return updated;
+    });
   };
 
   const rejectApplication = (reason: string) => {
@@ -469,6 +602,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return updated;
     });
 
+    if (isSupabaseConfigured()) {
+      supabase.from('applications').update({
+        status: 'REJECTED',
+        decision_reason: reason,
+        decided_at: decisionTime,
+        updated_at: decisionTime,
+      }).eq('id', application.id)
+        .then(({ error }) => {
+          if (error) console.warn('[Veriqo] Supabase application decision failed:', error.message);
+        });
+    }
+
     addEvent({
       applicationId: application.id,
       actorRole: 'OFFICER',
@@ -479,7 +624,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
 
     const notif: NotificationItem = {
-      id: 'notif-' + Math.random().toString(36).substring(2, 9),
+      id: `notif-${crypto.randomUUID()}`,
       title: `Application ${application.appNumber} Decision: Rejected`,
       message: `Reason: ${reason}`,
       type: 'WARNING',
@@ -487,7 +632,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       isRead: false,
       createdAt: decisionTime,
     };
-    setNotifications((prev) => [notif, ...prev]);
+    setNotifications((prev) => {
+      const updated = [notif, ...prev];
+      persistState({ notifications: updated });
+      return updated;
+    });
   };
 
   const markNotificationRead = (id: string) => {

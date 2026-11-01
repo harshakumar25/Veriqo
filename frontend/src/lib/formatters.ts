@@ -78,3 +78,4 @@ export function formatFileSize(kb: number): string {
   }
   return `${Math.round(kb)} KB`;
 }
+

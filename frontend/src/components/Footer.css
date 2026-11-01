@@ -1,0 +1,170 @@
+/* ==========================================================================
+   Veriqo — Institutional Footer (Reference Aligned)
+   ========================================================================== */
+
+.ref-footer {
+  background-color: #071426;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 60px 0 35px;
+  color: #cbd5e1;
+}
+
+.ref-footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.ref-footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 45px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Brand Column */
+.ref-footer-brand-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.ref-footer-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.ref-footer-emblem {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ref-footer-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.ref-footer-brand-name {
+  font-size: 19px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.ref-footer-gov-label {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.ref-footer-desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #94a3b8;
+  margin: 0 0 20px;
+  max-width: 380px;
+}
+
+.ref-footer-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ref-footer-pill {
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+/* Links Columns */
+.ref-footer-col-title {
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.ref-footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ref-footer-links a,
+.ref-footer-links span {
+  font-size: 13.5px;
+  color: #94a3b8;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.ref-footer-links a:hover,
+.ref-footer-links span:hover {
+  color: #f59e0b;
+}
+
+/* Footer Bottom Bar */
+.ref-footer-bottom {
+  padding-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.ref-footer-bottom-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ref-footer-copy {
+  font-size: 12.5px;
+  color: #94a3b8;
+}
+
+.ref-footer-disclaimer {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.ref-footer-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #34d399;
+  font-weight: 600;
+}
+
+/* ── Responsive Queries ── */
+@media (max-width: 900px) {
+  .ref-footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 550px) {
+  .ref-footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

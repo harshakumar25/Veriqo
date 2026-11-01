@@ -1,4 +1,4 @@
-// SIH 26130 BuildX Core Types
+// SIH 26130 Veriqo Core Types — Maharashtra Business Approval Prototype
 
 export type UserRole = 'ENTREPRENEUR' | 'OFFICER';
 
@@ -127,7 +127,7 @@ export interface QueryRecord {
   officerName: string;
   title: string;
   queryText: string;
-  status: 'OPEN' | 'RESPONDED' | 'RESOLVED';
+  status: 'OPEN' | 'RAISED' | 'RESPONDED' | 'RESOLVED';
   createdAt: string;
   response?: QueryResponse;
 }
@@ -169,4 +169,29 @@ export interface NotificationItem {
   linkUrl?: string;
   isRead: boolean;
   createdAt: string;
+}
+
+// Actor role for application events — includes SYSTEM for automated transitions
+export type PersonaRole = 'ENTREPRENEUR' | 'OFFICER' | 'SYSTEM';
+
+// SLA compliance tracking
+export type SLAStatus = 'ON_TRACK' | 'AT_RISK' | 'OVERDUE' | 'COMPLETED';
+
+export interface ComplianceObligation {
+  id: string;
+  approvalCode: string;
+  approvalName: string;
+  renewalDueDate: string;
+  daysUntilDue: number;
+  status: SLAStatus;
+}
+
+export interface IncentiveScheme {
+  id: string;
+  schemeName: string;
+  authority: string;
+  benefit: string;
+  eligibilitySummary: string;
+  applicationDeadline?: string;
+  isApplied: boolean;
 }

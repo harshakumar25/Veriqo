@@ -43,6 +43,7 @@ export default function GovernmentApplicationsQueuePage() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+            <span className="badge badge-amber">DEMONSTRATION QUEUE</span>
             <span className="badge badge-green">SCRUTINY CELL (PUNE REGION)</span>
             <span className="badge badge-blue">OFFICER: {currentPersona.name}</span>
           </div>

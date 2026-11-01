@@ -16,3 +16,4 @@ export function useBusinessProfile(): UseBusinessProfileReturn {
     updateBusiness: ctx.updateBusiness,
   };
 }
+

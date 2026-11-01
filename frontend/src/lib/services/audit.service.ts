@@ -1,29 +1,33 @@
 /**
- * Audit & Event Generation Service (Single Responsibility Principle - SRP).
- * Responsible solely for constructing immutable, standardized application events.
+ * Audit & Event Generation Service — Single Responsibility Principle (SRP).
+ * Solely responsible for constructing immutable, standardised application events.
+ * Writes to Supabase application_events table when configured; otherwise operates locally.
  */
 
-import { ApplicationEvent, PersonaRole } from '../types';
+import type { ApplicationEvent, PersonaRole } from '../types';
 
 export interface CreateEventParams {
   applicationId: string;
   actorRole: PersonaRole;
-  actorName: string;
-  eventType: ApplicationEvent['eventType'];
+  actorName?: string;
+  eventType: string;
   title: string;
   description?: string;
 }
 
+/**
+ * Constructs a new ApplicationEvent object with a collision-resistant ID.
+ * Does NOT perform any side effects — caller is responsible for state updates.
+ */
 export function createApplicationEvent(params: CreateEventParams): ApplicationEvent {
-  const uniqueId = `evt-${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 6)}`;
   return {
-    id: uniqueId,
+    id: `evt-${crypto.randomUUID()}`,
     applicationId: params.applicationId,
     actorRole: params.actorRole,
-    actorName: params.actorName,
+    actorName: params.actorName ?? 'System',
     eventType: params.eventType,
     title: params.title,
-    description: params.description || '',
+    description: params.description ?? '',
     createdAt: new Date().toISOString(),
   };
 }

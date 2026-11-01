@@ -36,3 +36,4 @@ export function useApplicationWorkflow(): UseApplicationWorkflowReturn {
     isDraft: application.status === 'DRAFT',
   };
 }
+

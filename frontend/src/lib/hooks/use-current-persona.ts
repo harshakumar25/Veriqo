@@ -20,3 +20,4 @@ export function useCurrentPersona(): UseCurrentPersonaReturn {
     isEntrepreneur: ctx.currentPersona.role === 'ENTREPRENEUR',
   };
 }
+

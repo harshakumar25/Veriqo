@@ -11,18 +11,18 @@ const isValidUrl = (url: string | undefined): boolean => {
   return true;
 };
 
-const supabaseUrl = isValidUrl(rawUrl) ? rawUrl! : 'https://demo-buildx.supabase.co';
+const supabaseUrl = isValidUrl(rawUrl) ? rawUrl! : 'https://demo-veriqo.supabase.co';
 const supabaseAnonKey =
   rawKey && !rawKey.includes('YOUR_SUPABASE')
     ? rawKey
-    : 'demo-anon-key-buildx';
+    : 'demo-anon-key-veriqo';
 
 export const isSupabaseConfigured = () => {
   return (
     isValidUrl(import.meta.env.VITE_SUPABASE_URL) &&
     import.meta.env.VITE_SUPABASE_ANON_KEY !== undefined &&
     !import.meta.env.VITE_SUPABASE_ANON_KEY.includes('YOUR_SUPABASE') &&
-    import.meta.env.VITE_SUPABASE_URL !== 'https://demo-buildx.supabase.co'
+    import.meta.env.VITE_SUPABASE_URL !== 'https://demo-veriqo.supabase.co'
   );
 };
 

@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/lib/use-app-store';
+import { translations } from '@/lib/i18n';
 import './Navbar.css';
 
-export default function Navbar({ onOpenAuth }) {
+export default function Navbar({ onOpenAuth, currentLang = 'en', onLanguageChange }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
   const { setPersona } = useAppStore();
 
+  const t = translations[currentLang]?.nav || translations.en.nav;
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 15);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -35,137 +38,264 @@ export default function Navbar({ onOpenAuth }) {
     }
   };
 
+  const handleNavClick = (anchorId) => {
+    setMobileOpen(false);
+    const element = document.getElementById(anchorId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const toggleLanguage = (lang) => {
+    if (onLanguageChange) {
+      onLanguageChange(lang);
+    }
+  };
+
   return (
-    <>
-      {/* Tricolor stripe — always at very top */}
-      <div className="tricolor-bar" aria-hidden="true" />
-
-      {/* Single unified navbar */}
-      <nav
-        className={`navbar ${scrolled ? 'scrolled' : ''}`}
-        role="navigation"
-        aria-label="Main navigation"
-      >
-        <div className="container navbar-inner">
-
-          {/* ── LEFT: Ashoka Emblem + Veriqo title ── */}
-          <Link to="/" className="navbar-brand" aria-label="Veriqo — Government of Maharashtra">
-            {/* Ashoka emblem */}
-            <div className="navbar-emblem" aria-hidden="true">
+    <header className={`ref-navbar-wrapper ${scrolled ? 'is-scrolled' : ''}`}>
+      <nav className="ref-navbar" role="navigation" aria-label="Main Navigation">
+        <div className="ref-navbar-container">
+          {/* ── Brand / Identity (Left) ── */}
+          <Link to="/" className="ref-brand" aria-label="Veriqo — Single Window Intelligence">
+            {/* Ashoka Chakra gold emblem */}
+            <div className="ref-emblem" aria-hidden="true">
               <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="18" cy="16" r="11" stroke="#F28C00" strokeWidth="1.4" fill="none" opacity="0.9"/>
-                <circle cx="18" cy="16" r="2.8" fill="#F28C00"/>
+                <circle cx="18" cy="18" r="14" stroke="#f59e0b" strokeWidth="1.6" fill="rgba(245, 158, 11, 0.08)" />
+                <circle cx="18" cy="18" r="12.2" stroke="#d97706" strokeWidth="0.8" strokeDasharray="1.5 1.5" />
+                <circle cx="18" cy="18" r="3.2" fill="#f59e0b" />
+                <circle cx="18" cy="18" r="1.4" fill="#071426" />
                 {Array.from({ length: 24 }, (_, i) => {
-                  const angle = (i * 15 - 90) * Math.PI / 180;
+                  const angle = (i * 15 - 90) * (Math.PI / 180);
                   return (
                     <line
                       key={i}
-                      x1={18 + 3.2 * Math.cos(angle)}
-                      y1={16 + 3.2 * Math.sin(angle)}
-                      x2={18 + 9.5 * Math.cos(angle)}
-                      y2={16 + 9.5 * Math.sin(angle)}
-                      stroke="#F28C00"
-                      strokeWidth="0.9"
-                      opacity="0.8"
+                      x1={18 + 3.4 * Math.cos(angle)}
+                      y1={18 + 3.4 * Math.sin(angle)}
+                      x2={18 + 12.0 * Math.cos(angle)}
+                      y2={18 + 12.0 * Math.sin(angle)}
+                      stroke="#f59e0b"
+                      strokeWidth="1.1"
+                      strokeLinecap="round"
                     />
                   );
                 })}
-                <rect x="8" y="29" width="20" height="2.2" rx="1.1" fill="#F28C00" opacity="0.85"/>
-                <rect x="11" y="32.5" width="14" height="2" rx="1" fill="#F28C00" opacity="0.6"/>
               </svg>
             </div>
 
-            {/* Veriqo + Gov of Maharashtra stacked */}
-            <div className="navbar-identity">
-              <span className="navbar-buildx-name">Veriq<span className="navbar-x">o</span></span>
-              <span className="navbar-gov-sub">Government of Maharashtra</span>
+            {/* Veriqo + Prototype Attribution */}
+            <div className="ref-identity">
+              <span className="ref-brand-title">
+                Veriq<span className="ref-brand-accent">o</span>
+              </span>
+              <span className="ref-brand-sub">MAHARASHTRA APPROVAL PROTOTYPE</span>
             </div>
           </Link>
 
-          {/* ── CENTER: Nav links ── */}
-          <div className="navbar-links">
-            <a href="#how-it-works" className="nav-link">How It Works</a>
-            <a href="#features" className="nav-link">Features</a>
-            <a href="#sectors" className="nav-link">Sectors</a>
-            <a href="#about" className="nav-link">About</a>
+          {/* ── Center Nav Links ── */}
+          <div className="ref-nav-links">
+            <a
+              href="#how-it-works"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('how-it-works');
+              }}
+              className="ref-nav-link"
+            >
+              {t.howItWorks}
+            </a>
+            <a
+              href="#features"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('features');
+              }}
+              className="ref-nav-link"
+            >
+              {t.features}
+            </a>
+            <a
+              href="#sectors"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('sectors');
+              }}
+              className="ref-nav-link"
+            >
+              {t.sectors}
+            </a>
+            <a
+              href="#about"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('about');
+              }}
+              className="ref-nav-link"
+            >
+              {t.about}
+            </a>
           </div>
 
-          {/* ── RIGHT: Utility + Actions ── */}
-          <div className="navbar-actions">
-            {/* Language switcher */}
-            <div className="navbar-lang">
-              <span className="lang-link" lang="hi" style={{ cursor: 'pointer' }}>हिंदी</span>
-              <span className="lang-sep">|</span>
-              <span className="lang-link" lang="mr" style={{ cursor: 'pointer' }}>मराठी</span>
+          {/* ── Right Actions & Utilities ── */}
+          <div className="ref-nav-actions">
+            {/* Functional Language Switcher */}
+            <div className="ref-lang-switcher" aria-label="Language selection">
+              <button
+                type="button"
+                className={`ref-lang-btn ${currentLang === 'en' ? 'active' : ''}`}
+                onClick={() => toggleLanguage('en')}
+                lang="en"
+              >
+                EN
+              </button>
+              <span className="ref-lang-divider">|</span>
+              <button
+                type="button"
+                className={`ref-lang-btn ${currentLang === 'hi' ? 'active' : ''}`}
+                onClick={() => toggleLanguage('hi')}
+                lang="hi"
+              >
+                हिंदी
+              </button>
+              <span className="ref-lang-divider">|</span>
+              <button
+                type="button"
+                className={`ref-lang-btn ${currentLang === 'mr' ? 'active' : ''}`}
+                onClick={() => toggleLanguage('mr')}
+                lang="mr"
+              >
+                मराठी
+              </button>
             </div>
 
-            <div className="navbar-actions-divider" aria-hidden="true" />
-
-            {/* Live indicator */}
-            <div className="navbar-live">
-              <span className="live-dot" />
-              <span className="live-text">Live</span>
+            {/* Prototype Active Badge (Truth in Advertising) */}
+            <div className="ref-live-badge" title="Demonstration Prototype — Not official government portal">
+              <span className="ref-live-pulse-dot" />
+              <span className="ref-live-text">{t.modeBadge}</span>
             </div>
 
-            {/* Sign In */}
+            {/* Sign In Button */}
             <button
               onClick={handleSignIn}
-              className="navbar-btn-login"
+              className="ref-btn-signin"
               id="nav-login-btn"
+              type="button"
             >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-                <polyline points="10 17 15 12 10 7"/>
-                <line x1="15" y1="12" x2="3" y2="12"/>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                <polyline points="10 17 15 12 10 7" />
+                <line x1="15" y1="12" x2="3" y2="12" />
               </svg>
-              Sign In
+              <span>{t.signIn}</span>
             </button>
 
-            {/* Register CTA */}
+            {/* Get Started CTA Button */}
             <button
               onClick={handleGetStarted}
-              className="navbar-btn-register"
+              className="ref-btn-getstarted"
               id="nav-register-btn"
+              type="button"
             >
-              Get Started
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
+              <span>{t.getStarted}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </button>
 
-            {/* Hamburger */}
+            {/* Mobile Hamburger Toggle */}
             <button
-              className="navbar-hamburger"
-              aria-label="Toggle menu"
+              className={`ref-hamburger ${mobileOpen ? 'is-active' : ''}`}
+              aria-label="Toggle navigation menu"
               aria-expanded={mobileOpen}
               onClick={() => setMobileOpen(!mobileOpen)}
+              type="button"
             >
-              <span className={`hb ${mobileOpen ? 'open' : ''}`} />
-              <span className={`hb ${mobileOpen ? 'open' : ''}`} />
-              <span className={`hb ${mobileOpen ? 'open' : ''}`} />
+              <span className="ref-hb-bar" />
+              <span className="ref-hb-bar" />
+              <span className="ref-hb-bar" />
             </button>
           </div>
         </div>
 
-        {/* Mobile dropdown */}
+        {/* ── Mobile Menu Dropdown ── */}
         {mobileOpen && (
-          <div className="navbar-mobile-menu">
-            <div className="container">
-              <a href="#how-it-works" onClick={() => setMobileOpen(false)}>How It Works</a>
-              <a href="#features" onClick={() => setMobileOpen(false)}>Features</a>
-              <a href="#sectors" onClick={() => setMobileOpen(false)}>Sectors</a>
-              <a href="#about" onClick={() => setMobileOpen(false)}>About</a>
-              <div className="mobile-divider" />
-              <div className="mobile-lang">
-                <span lang="hi">हिंदी</span>
-                <span lang="mr">मराठी</span>
-              </div>
-              <button onClick={(e) => { setMobileOpen(false); handleSignIn(e); }} className="mobile-login" style={{ width: '100%', padding: '10px', background: 'transparent', color: '#fff', cursor: 'pointer', borderRadius: '6px' }}>Sign In</button>
-              <button onClick={(e) => { setMobileOpen(false); handleGetStarted(e); }} className="mobile-register" style={{ width: '100%', padding: '10px', background: '#F28C00', color: '#fff', border: 'none', cursor: 'pointer', borderRadius: '6px', marginTop: '6px' }}>Get Started →</button>
+          <div className="ref-mobile-drawer">
+            <div className="ref-mobile-links">
+              <a
+                href="#how-it-works"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick('how-it-works');
+                }}
+                className="ref-mobile-link"
+              >
+                {t.howItWorks}
+              </a>
+              <a
+                href="#features"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick('features');
+                }}
+                className="ref-mobile-link"
+              >
+                {t.features}
+              </a>
+              <a
+                href="#sectors"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick('sectors');
+                }}
+                className="ref-mobile-link"
+              >
+                {t.sectors}
+              </a>
+              <a
+                href="#about"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick('about');
+                }}
+                className="ref-mobile-link"
+              >
+                {t.about}
+              </a>
+            </div>
+
+            <div className="ref-mobile-actions">
+              <button
+                onClick={(e) => {
+                  setMobileOpen(false);
+                  handleSignIn(e);
+                }}
+                className="ref-btn-signin w-full"
+                type="button"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                  <polyline points="10 17 15 12 10 7" />
+                  <line x1="15" y1="12" x2="3" y2="12" />
+                </svg>
+                {t.signIn}
+              </button>
+              <button
+                onClick={(e) => {
+                  setMobileOpen(false);
+                  handleGetStarted(e);
+                }}
+                className="ref-btn-getstarted w-full"
+                type="button"
+              >
+                {t.getStarted}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
             </div>
           </div>
         )}
       </nav>
-    </>
+    </header>
   );
 }

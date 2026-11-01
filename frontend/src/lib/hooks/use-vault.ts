@@ -23,3 +23,4 @@ export function useVault(): UseVaultReturn {
     getDocumentsByCategory,
   };
 }
+

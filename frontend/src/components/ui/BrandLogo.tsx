@@ -76,3 +76,4 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 
   return logoContent;
 };
+
