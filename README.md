@@ -28,7 +28,7 @@
 
 </div>
 
-## 📌 Executive Summary & Macro Problem Analysis
+## Executive Summary & Macro Problem Analysis
 
 Maharashtra is India’s industrial engine, supporting over **7.33 million registered MSMEs** and accounting for approximately **15% of the national GDP**. However, commissioning a new manufacturing or logistics facility (such as a 5,000 MT refrigerated cold chain, chemical synthesis plant, or automotive ancillary) requires traversing **5 to 15 statutory approvals across 5+ sovereign state and central departments**—including the Maharashtra Pollution Control Board (MPCB), Directorate of Industrial Safety & Health (DISH), Maharashtra Industrial Development Corporation (MIDC), Maharashtra State Electricity Distribution Company Limited (MSEDCL), Maharashtra Fire Services, and FSSAI.
 
@@ -58,7 +58,7 @@ While platforms such as **MAITRI 2.0** and the National Single Window System (NS
 
 ---
 
-## 🏛️ System Architecture & Mathematical Foundations
+##  System Architecture & Mathematical Foundations
 
 ```
                                     VERIQO PLATFORM TOPOLOGY
@@ -142,7 +142,7 @@ $$\text{Sim}(s_1, s_2) = 1 - \frac{\text{LevDist}(\text{normalize}(s_1), \text{n
 
 ---
 
-## 🔍 3-Level Pre-Validation Engine
+## 3-Level Pre-Validation Engine
 
 The pre-validation engine (`frontend/src/lib/prevalidation/`) operates completely zero-dependency and client-side, eliminating wasted round trips and bad submissions.
 
@@ -213,14 +213,14 @@ DAG impact     : 2 nodes blocked, 6 locked downstream. CRITICAL PATH IMPACTED.
 
 ---
 
-## 🌟 Core System Capabilities
+##  Core System Capabilities
 
-### 1. 🧭 Topological DAG Roadmap Canvas
+### 1.  Topological DAG Roadmap Canvas
 - **Visual Clarity**: Interactive graph canvas powered by `@xyflow/react` rendering real-time node statuses (`COMPLETED`, `IN_PROGRESS`, `READY_TO_APPLY`, `LOCKED`).
 - **Prerequisite Locking**: Nodes remain gated with human-readable legal explanations until antecedent clearance certificates are logged.
 - **Dynamic Critical Path Visualizer**: Highlights concurrent parallel tracks and highlights the bottleneck chain (e.g. `MIDC_BUILDING_FIRE` $\to$ `DISH_FACTORY_LICENSE` $\to$ `MIDC_OCCUPANCY`).
 
-### 2. 🗄️ Canonical Reusable Document Vault
+### 2.  Canonical Reusable Document Vault
 - **Zero-Redundancy Filing**: Upload foundational company incorporation deeds, land allotment orders, and architectural drawings once; attach them to multiple departmental dockets.
 - **Verification Badging**: Reflects department verification stamps directly on vaulted assets.
 
@@ -229,16 +229,16 @@ DAG impact     : 2 nodes blocked, 6 locked downstream. CRITICAL PATH IMPACTED.
 - **Side-by-Side Review Matrix**: Officers view extracted document values side-by-side with official state databases, with conflicting fields highlighted in red.
 - **Bidirectional Query Loop**: Officers issue specific, field-targeted queries; entrepreneurs upload revised documents with in-line changelogs; statuses update synchronously.
 
-### 4. 🚒 Common Inspection Scheduling (CIS-NX)
+### 4.  Common Inspection Scheduling (CIS-NX)
 - **Joint Audit Coordination**: Replaces 3-5 separate inspector visits with a synchronized joint inspection slot coordinated between MPCB, DISH, and Maharashtra Fire Services.
 - **Standardized Digital Checklists**: 5-point statutory checklist verification with real-time audit logging and timestamped inspector sign-offs.
 
-### 5. 💰 PSI 2019 Incentive Screening Engine
+### 5.  PSI 2019 Incentive Screening Engine
 - **Policy Matching**: Evaluates business capital expenditure, location classification (MIDC Taluka Group: `A`, `B`, `C`, `D`, `D+`, or `No-Industry`), and employment generation against the **Maharashtra Package Scheme of Incentives (PSI) 2019** and central cold-chain schemes (MoFPI).
 
 ---
 
-## 📦 Locked Hero Demonstration Dataset
+##  Locked Hero Demonstration Dataset
 
 The repository includes a locked, end-to-end industrial test dossier modeled after a high-capacity logistics project in Pune:
 
@@ -270,7 +270,7 @@ Assigned Scrutiny Officer:
 
 ---
 
-## 📜 Statutory Legal Matrix (Maharashtra)
+##  Statutory Legal Matrix (Maharashtra)
 
 All statutory clearances modeled in Veriqo are grounded in real Indian legislation and Maharashtra State Acts:
 
@@ -289,7 +289,7 @@ All statutory clearances modeled in Veriqo are grounded in real Indian legislati
 
 ---
 
-## 🗄️ Relational Database Schema (PostgreSQL 16)
+##  Relational Database Schema (PostgreSQL 16)
 
 The data model is fully normalized, relational, and documented with strict referential integrity. Schema files reside in `supabase/migrations/`:
 
@@ -419,7 +419,7 @@ Veriqo/
 
 ---
 
-## ⚡ Quickstart Guide
+##  Quickstart Guide
 
 ### Prerequisites
 - **Node.js**: v18.0.0 or higher (`node -v`)
@@ -460,50 +460,3 @@ npm run build
 ```
 
 ---
-
-## 🎬 Live Demonstration Runbook (3-Minute Evaluator Flow)
-
-Follow this exact sequence during presentations or evaluations to demonstrate the full end-to-end regulatory lifecycle:
-
-### Step 1: The Entrepreneur Entry & Rule Engine (0:00 – 0:45)
-1. Open `http://localhost:5173/` and click **"Entrepreneur Portal"** (or open `/entrepreneur/business-profile`).
-2. Review the pre-populated **20-parameter profile** for *FreshChain Cold Logistics Pvt. Ltd.* (MIDC Chakan Phase II, 5,000 MT capacity, 750 kW power).
-3. Click **"Analyze Regulatory Requirements"** $\to$ the **Declarative Rule Engine** evaluates Maharashtra state rules and identifies **9 statutory clearances across 3 stages**.
-
-### Step 2: The Interactive DAG Roadmap (0:45 – 1:30)
-1. Navigate to **"My Roadmap"** (`/entrepreneur/roadmap`).
-2. Interact with the **Topological DAG Canvas**:
-   - Notice that upstream approvals (MIDC Plan Sanction, MPCB CTE) are sequenced first.
-   - Click **FSSAI Central Licence** (`MH_FSSAI_CENTRAL`) $\to$ opens the Statutory Drawer citing *Food Safety & Standards Regulations 2011*, required documents, and SLA.
-   - Observe that downstream operational clearances (e.g. **DISH Factory License**, **MIDC Occupancy**) are `LOCKED 🔒` with clear explanations of missing parent clearances.
-
-### Step 3: Pre-Validation Scan & Blocker Demonstration (1:30 – 2:15)
-1. Navigate to the FSSAI Application (`/application/app-hero-fssai-01`).
-2. Click **"Run Pre-Validation Scan"**:
-   - The engine simulates an unverified or mismatched document state (e.g. missing *Process Flow Diagram*).
-   - Shows a **CRITICAL BLOCKER** banner, explaining the exact legal reason and disabling the "Submit Application" button.
-3. Attach the verified document from the **Canonical Document Vault** (`/vault`) $\to$ Pre-Validation clears $\to$ Click **"Submit Application"**.
-
-### Step 4: Government Scrutiny Desk & Decision (2:15 – 3:00)
-1. In the top navigation bar, toggle the Persona Switcher to **"Government Officer"** (*Rajesh Kumar, Scrutiny Lead*).
-2. On the **Scrutiny Desk** (`/government/dashboard`), view the pending application classified as **`LOW RISK / PRE-VALIDATED 🟢`**.
-3. Open the Dossier (`/government/applications/app-hero-fssai-01`):
-   - **Split-Screen Discrepancy Diff**: Observe cross-checks between the application, PAN, and MIDC records.
-   - **Query Management**: Inspect the resolved query regarding cooling coil specifications.
-   - **CIS-NX Inspection**: Review the joint site inspection record marked **SATISFACTORY** with timestamped inspector signatures.
-   - Click **"Record Final Approval"** $\to$ Updates the clearance status to **`APPROVED`**, generates certificate reference `APR-MH-2026-00124`, and synchronizes back to the Entrepreneur's live dashboard!
-
----
-
-## 👥 Engineering Team & Acknowledgments
-
-- **Platform**: **Veriqo** (Intelligent Industrial Approval & Compliance OS)
-- **Problem Statement**: SIH 26130 — *Streamlining Industrial Approvals, Compliance & Support*
-- **Sponsoring Agency**: Maharashtra State Innovation Society (MSIS) / Directorate of Industries, Government of Maharashtra
-- **Overlay Target**: MAITRI 2.0 (Maharashtra Industry, Trade and Investment Facilitation Cell)
-
----
-
-<div align="center">
-  <sub>Engineered with precision for the Smart India Hackathon 2026. Built on React 19, TypeScript 5.7, and the Maharashtra Single-Window Legal Framework.</sub>
-</div>
