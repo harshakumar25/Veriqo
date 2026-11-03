@@ -4,6 +4,9 @@
 
 ### **Intelligent Industrial Regulatory, Clearance & Compliance Orchestration Engine**
 
+
+
+---
 [![Production Build](https://img.shields.io/badge/Build-Passing%20(Vite%208.2)-emerald?style=for-the-badge&logo=vite)](https://github.com/harshakumar25/Veriqo)
 [![Linter](https://img.shields.io/badge/Oxlint-0%20Warnings%20%7C%200%20Errors-blue?style=for-the-badge&logo=oxc)](https://oxc.rs)
 [![Prevalidation Suite](https://img.shields.io/badge/Pre--Validation%20Engine-27%2F27%20Passed%20%E2%9C%85-10b981?style=for-the-badge&logo=checkmarx)](./frontend/src/lib/prevalidation/demo.ts)
@@ -28,7 +31,55 @@
 
 </div>
 
-## 📌 Executive Overview & Core Problem Analysis
+
+##  Quickstart Guide
+
+### Prerequisites
+- **Node.js**: v18.0.0 or higher (`node -v`)
+- **npm**: v9.0.0 or higher (`npm -v`)
+
+### 1. Installation
+Clone the repository and install all dependencies:
+
+```bash
+git clone https://github.com/harshakumar25/Veriqo.git
+cd Veriqo
+npm install
+cd frontend && npm install && cd ..
+```
+
+### 2. Run the Verification Test Suite
+Execute the 27-scenario mathematical test harness:
+
+```bash
+cd frontend && npm test
+```
+
+### 3. Run Quality Linters
+Ensure zero warnings and zero errors across all codebase rules:
+
+```bash
+cd frontend && npm run lint
+```
+
+### 4. Start the Development Server
+Launch the interactive web application:
+
+```bash
+cd frontend && npm run dev
+```
+
+Open your browser at: **[http://localhost:5173](http://localhost:5173)**
+
+### 5. Build for Production
+Generate an optimized, tree-shaken static production bundle:
+
+```bash
+cd frontend && npm run build
+```
+
+
+##  Executive Overview & Core Problem Analysis
 
 Setting up an industrial facility, commercial warehouse, or specialized processing unit (e.g., cold storage logistics, chemical synthesis plant, engineering fabrication) requires traversing **5 to 15 statutory permits across multi-jurisdictional government bodies**—including Pollution Control, Industrial Safety & Health, Fire Services, Electricity Distribution, Local Development Authorities, and Food Safety regulators.
 
@@ -59,7 +110,7 @@ While conventional e-governance systems and single-window portals aggregate digi
 
 ---
 
-## 🏛️ Architecture & System Topology
+##  Architecture & System Topology
 
 Veriqo follows strict **SOLID** architecture principles, decoupling presentation, domain state machines, persistence, and external services:
 
@@ -124,27 +175,6 @@ flowchart TD
 - **Dependency Inversion Principle (DIP)**: React components depend on high-level service interfaces rather than raw browser storage or direct external client bindings.
 
 ---
-
-## ⚙️ Mathematical Foundations & Algorithms
-
-### 1. Topological Prerequisite Graph Formulation
-
-Let statutory approvals be represented as a finite directed acyclic graph:
-
-$$\mathcal{G} = (V, E)$$
-
-Where:
-- $V = \{ v_1, v_2, \dots, v_n \}$ represents distinct statutory clearance modules.
-- $E \subset V \times V$ represents statutory prerequisite constraints: $(u, v) \in E$ denotes that approval $u$ must be granted before approval $v$ may transition to `READY_TO_APPLY`.
-
-**In-Degree Kahn's Resolution Algorithm ($O(|V| + |E|)$):**
-
-$$\text{in\_deg}(v) = |\{ u \in V \mid (u, v) \in E \land \text{status}(u) \neq \text{'APPROVED'} \}|$$
-
-- If $\text{in\_deg}(v) = 0 \implies \text{status}(v) \leftarrow \text{'READY\_TO\_APPLY'}$
-- If $\text{in\_deg}(v) > 0 \implies \text{status}(v) \leftarrow \text{'LOCKED'}$, with the set of blocking parents:
-
-$$\mathcal{B}(v) = \{ u \in V \mid (u, v) \in E \land \text{status}(u) \neq \text{'APPROVED'} \}$$
 
 ### 2. Critical Path Method (CPM) Dynamic SLA Scheduling
 
@@ -246,32 +276,32 @@ SELF-CHECK RESULTS
 
 ---
 
-## 🌟 Core Platform Modules
+##  Core Platform Modules
 
-### 1. 🧭 Topological DAG Roadmap Canvas
+### 1.  Topological DAG Roadmap Canvas
 - **Dynamic Node Evaluation**: Interactive flow canvas powered by `@xyflow/react` reflecting real-time clearance statuses (`COMPLETED`, `IN_PROGRESS`, `READY_TO_APPLY`, `LOCKED`).
 - **Prerequisite Locking**: Explains exact missing parent certificates required to unlock downstream milestones.
 - **Bottleneck Analysis**: Visually distinguishes critical path milestones from parallel independent tracks.
 
-### 2. 🗄️ Canonical Reusable Document Vault
+### 2.  Canonical Reusable Document Vault
 - **Single-Upload Architecture**: Upload foundational corporate deeds, land lease agreements, and site plans once; reuse them across multiple applications without duplicative uploads.
 - **Verification Badging**: Tracks document verification status (`UPLOADED`, `VERIFIED`, `REJECTED`).
 
-### 3. ⚖️ Scrutiny Desk & Explainable Risk Triage
+### 3.  Scrutiny Desk & Explainable Risk Triage
 - **Risk Classification**: Classifies dossiers into Low, Medium, and High risk based on pre-validation delta metrics and industrial classification.
 - **Side-by-Side Review Matrix**: Displays extracted form values against external registry records with highlighted diffs.
 - **Bidirectional Query Loop**: Enables field-specific queries and response document uploads with instant status synchronization.
 
-### 4. 🚒 Common Inspection Desk (CIS-NX)
+### 4.  Common Inspection Desk (CIS-NX)
 - **Joint Inspection Coordination**: Coordinates joint inspection windows across environmental, safety, and fire authorities.
 - **Standardized Checklists**: 5-point verification checklist with digital timestamps and outcome recording (`SATISFACTORY`, `UNSATISFACTORY`, `FOLLOW_UP_REQUIRED`).
 
-### 5. 💰 Capital Incentive Screening Engine
+### 5.  Capital Incentive Screening Engine
 - **Incentive Matching**: Evaluates investment scale, taluka industrial group classification, and employment numbers against package incentive schemes.
 
 ---
 
-## 🗄️ Data Contracts & Schema Topology
+##  Data Contracts & Schema Topology
 
 The database layer runs on PostgreSQL 16 (configured via `supabase/migrations/`) with complete referential integrity, automated timestamp triggers, and indexed foreign keys:
 
@@ -301,7 +331,7 @@ businesses (1) ──────────< (N) documents
 
 ---
 
-## 📦 Canonical Industrial Benchmark Dossier
+## Canonical Industrial Benchmark Dossier
 
 The platform includes a verified benchmark dataset modeled after an industrial logistics and cold-chain facility:
 
@@ -427,55 +457,8 @@ Veriqo/
 
 ---
 
-## ⚡ Quickstart Guide
 
-### Prerequisites
-- **Node.js**: v18.0.0 or higher (`node -v`)
-- **npm**: v9.0.0 or higher (`npm -v`)
-
-### 1. Installation
-Clone the repository and install all dependencies:
-
-```bash
-git clone https://github.com/harshakumar25/Veriqo.git
-cd Veriqo
-npm install
-cd frontend && npm install && cd ..
-```
-
-### 2. Run the Verification Test Suite
-Execute the 27-scenario mathematical test harness:
-
-```bash
-cd frontend && npm test
-```
-
-### 3. Run Quality Linters
-Ensure zero warnings and zero errors across all codebase rules:
-
-```bash
-cd frontend && npm run lint
-```
-
-### 4. Start the Development Server
-Launch the interactive web application:
-
-```bash
-cd frontend && npm run dev
-```
-
-Open your browser at: **[http://localhost:5173](http://localhost:5173)**
-
-### 5. Build for Production
-Generate an optimized, tree-shaken static production bundle:
-
-```bash
-cd frontend && npm run build
-```
-
----
-
-## 🎬 Live Demonstration Runbook (3-Minute Evaluator Flow)
+##  Live Demonstration Runbook (3-Minute Evaluator Flow)
 
 Follow this sequence to review the end-to-end regulatory approval lifecycle:
 
@@ -509,7 +492,7 @@ Follow this sequence to review the end-to-end regulatory approval lifecycle:
 
 ---
 
-## 📄 License & Open Source Attribution
+##  License & Open Source Attribution
 
 Veriqo is open-source software licensed under the **MIT License**. See [LICENSE](./LICENSE) for details.
 
