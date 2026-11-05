@@ -495,7 +495,3 @@ Follow this sequence to review the end-to-end regulatory approval lifecycle:
 ##  License & Open Source Attribution
 
 Veriqo is open-source software licensed under the **MIT License**. See [LICENSE](./LICENSE) for details.
-
-<div align="center">
-  <sub>Designed and engineered for high-assurance industrial compliance, transparent governance, and accelerated enterprise setup.</sub>
-</div>
